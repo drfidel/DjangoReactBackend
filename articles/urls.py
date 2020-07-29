@@ -6,5 +6,7 @@ from .views import AuthorView, ArticleView
 #will help us reverse look up later
 urlpatterns = [
     path('authors/', AuthorView.as_view()),
+    path('authors/<int:pk>', AuthorView.as_view()),
     path('articles/', ArticleView.as_view()),
+    path('articles/<int:pk>', ArticleView.as_view()),
 ]

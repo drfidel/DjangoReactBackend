@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 from rest_framework.response import Response
@@ -36,3 +36,18 @@ class ArticleView(APIView):
         if serializer.is_valid(raise_exception=True):
             article_saved = serializer.save()
         return Response({"Success": "Article '{}' created successfully".format(article_saved.title)})
+    
+    def put(self, request, pk):
+        saved_article = get_object_or_404(Article.objects.all(), pk=pk)
+        data = request.data.get('articles')
+
+        serializer = ArticleSerializer(instance=saved_article, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            article_saved = serializer.save()
+        return Response({"Success": "Article {} updated successfully". format(article_saved.title)})
+    
+    def delete(self, request, pk):
+        # get object with this pk
+        article = get_object_or_404(Article.objects.all(), pk=pk)
+        article.delete()
+        return Response({"message" : "Article with id '{}' has been deleted.".format(pk)},status=204)
