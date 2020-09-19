@@ -6,15 +6,15 @@ from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin
 
-from .models import Author, Article
-from .serializers import ArticleSerializer, AuthorSerializer
+from .models import BookAuthor, Book
+from .bookSerializers import BookSerializer, BookAuthorSerializer
 
-class AuthorView(ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+class BookAuthorView(ListCreateAPIView):
+    queryset = BookAuthor.objects.all()
+    serializer_class = BookAuthorSerializer
 
     def perform_create(self, serializer):
-        author = get_object_or_404(Author, id=self.request.data.get('author_id'))
+        author = get_object_or_404(BookAuthor, id=self.request.data.get('author_id'))
         return serializer.save()
 
     def get(self, request, *args, **kwargs):
@@ -23,17 +23,17 @@ class AuthorView(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
-class SingleAuthorView(RetrieveUpdateDestroyAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+class SingleBookAuthorView(RetrieveUpdateDestroyAPIView):
+    queryset = BookAuthor.objects.all()
+    serializer_class = BookAuthorSerializer
         
 
-class ArticleView(ListCreateAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+class BookView(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
 
     def perform_create(self, serializer):
-        author = get_object_or_404(Author, id=self.request.data.get('author_id'))
+        author = get_object_or_404(BookAuthor, id=self.request.data.get('author_id'))
         return serializer.save(author=author)
     
     def get(self, request, *args, **kwargs):
@@ -43,6 +43,6 @@ class ArticleView(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
     
-class SingleArticleView(RetrieveUpdateDestroyAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+class SingleBookView(RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
